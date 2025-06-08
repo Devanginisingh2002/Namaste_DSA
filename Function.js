@@ -1,57 +1,68 @@
-class Node {
-    int data;
-    Node next;
+"Function, if-else";
 
-    Node(int d) {
-        data = d;
-        next = null;
+"Static and Dynamic";
+/*
+// static
+    function greet(name) {
+        console.log("Hello", name);
+    }
+
+    greet("Riya");
+
+// dynamic
+    function greet(name) {
+        console.log("Hello", name);
+    }
+    let userName = "Riya";
+    greet(userName);
+*/
+
+/*Addition 
+    function sum(a,b){
+        let add = a + b;
+        console.log(add);
+    }
+
+    let x = 2;  // dynamic
+    let y = 2;
+    sum(7,2);
+    sum(x,y);
+*/
+
+/*Square: Return the square of a number 
+    function square(x){
+        return x * x;
+    }
+    console.log(square(4));
+*/
+
+"if-else";
+/*Create a function, eligible to vote or note 
+
+function toVote(age) {
+    if (age < 0) {
+        console.log("Invalid");
+    } else if(age < 18) {
+        console.log("Not Eligible");
+    } else {
+        console.log("Eligible");
+}
+}
+toVote(10);
+toVote(-1);
+toVote(20);
+*/
+
+/*Create fxn odd or even */
+
+function oddEven(num){
+    if(num%2 == 0) {
+        console.log("Even");
+    } else {
+        console.log("Odd");
     }
 }
 
-class Solution {
-
-    public static Node reverse(Node head) {
-        Node prev = null;
-        Node curr = head;
-        while (curr != null) {
-            Node next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-        }
-        return prev;
-    }
-
-    static Node addTwoLists(Node num1, Node num2) {
-        num1 = reverse(num1);
-        num2 = reverse(num2);
-
-        Node dummy = new Node(0);
-        Node temp = dummy;
-        int carry = 0;
-
-        while (num1 != null || num2 != null || carry > 0) {
-            int sum = carry;
-            if (num1 != null) {
-                sum += num1.data;
-                num1 = num1.next;
-            }
-            if (num2 != null) {
-                sum += num2.data;
-                num2 = num2.next;
-            }
-            carry = sum / 10;
-            temp.next = new Node(sum % 10);
-            temp = temp.next;
-        }
-
-        Node result = reverse(dummy.next);
-
-        // Remove leading zeros if any
-        while (result != null && result.data == 0 && result.next != null) {
-            result = result.next;
-        }
-
-        return result;
-    }
-}
+oddEven(2);
+oddEven(8);
+oddEven(17);
