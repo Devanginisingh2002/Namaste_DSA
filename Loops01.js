@@ -1,5 +1,5 @@
-'Loops -> 01'
-'for-loop'
+"Loops -> 01";
+"for-loop";
 //eg: 1
 // for(let i=0; i<=5; i++){
 //     console.log("Hello World", i);
@@ -24,7 +24,7 @@
 //eg: 5
 // for(let i=5; i>=0; i--){
 //     console.log("Hello", i);
-// } 
+// }
 
 //eg: 6 Infinite loop
 // for(let i=1; i<0; i++){
@@ -49,7 +49,7 @@ let arr = [13, 26, 39, 52, 65, 78, 91, 103];
 
 /* Note: For finding the length of an array, we use arr.length */
 let length = arr.length;
-console.log("Length of an array:",length)  // Length of an array: 8 
+console.log("Length of an array:", length); // Length of an array: 8
 
 // Even
 // for(let i=0; i<arr.length; i++){
@@ -65,10 +65,9 @@ console.log("Length of an array:",length)  // Length of an array: 8
 //     }
 // }
 
-
-'While - loop'
-let i=0;
-while(i<5){
-    console.log("Hellow");
-    i++;
+("While - loop");
+let i = 0;
+while (i < 5) {
+  console.log("Hellow");
+  i++;
 }
