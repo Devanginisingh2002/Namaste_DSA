@@ -71,7 +71,7 @@ console.log(largest(arr));
 "Question 4";
 // Write a fxn that returns the largest in an array.
 function smallest(arr) {
-  let smallest = arr[0];    //+Infinity
+  let smallest = arr[0]; //+Infinity
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] < smallest) {
       smallest = arr[i];
@@ -79,5 +79,5 @@ function smallest(arr) {
   }
   return smallest;
 }
-let arr = [2,3,4,5,6,1,2,3,4];
+let arr = [2, 3, 4, 5, 6, 1, 2, 3, 4];
 console.log(smallest(arr));
