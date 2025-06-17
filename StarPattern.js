@@ -89,3 +89,63 @@ for(let i=0; i<=5; i++){
     console.log(row);
 }
 */
+
+/* 
+           *        
+        *  *
+     *  *  *
+  *  *  *  *
+* *  *  *  *
+let n = 5;
+for(let i=0; i<=n; i++){
+    let row = "";
+    // adding spaces
+    for(let j=0; j < n-(i+1); j++){
+        row = row + ".";
+    }
+    // adding stars
+    for(let k=0; k < i+1; k++){
+        row = row + "*";
+    }
+    console.log(row);
+}
+*/
+
+/* 
+1 
+1 0  
+1 0 1
+1 0 1 0
+1 0 1 0 1
+for(let i=0; i<=4; i++){
+    let row = "";
+    let switch_variable = 1;
+    
+    for(let j=0; j<=i; j++){
+        row = row + switch_variable;
+        
+        if(switch_variable == 1){
+            switch_variable = 0
+        } else {
+            switch_variable = 1;
+    }
+}
+console.log(row);
+}
+*/
+
+/*
+1 
+0 1
+0 1 0
+1 0 1 0
+1 0 1 0 1
+ */
+
+for(let i=0; i<=4; i++){
+    let row = "";
+    let toggle = 1;
+    for(let j=0; j <= i; j++){
+
+    }
+}
