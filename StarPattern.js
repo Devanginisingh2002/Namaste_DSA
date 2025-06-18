@@ -142,10 +142,16 @@ console.log(row);
 1 0 1 0 1
  */
 
+let switch_variable = 1;
 for(let i=0; i<=4; i++){
-    let row = "";
-    let toggle = 1;
-    for(let j=0; j <= i; j++){
-
+    let row = "";    
+    for(let j=0; j<=i; j++){
+        row = row + switch_variable;
+        if(switch_variable == 1){
+            switch_variable = 0
+        } else {
+            switch_variable = 1;
     }
+}
+console.log(row);
 }
