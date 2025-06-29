@@ -14,14 +14,7 @@ class Solution {
         currentSum += node.data;
         int count = prefixSumCount.getOrDefault(currentSum - k, 0);
         
-        prefixSumCount.put(currentSum, prefixSumCount.getOrDefault(currentSum, 0) + 1);
-        
-        count += dfs(node.left, currentSum, k, prefixSumCount);
-        count += dfs(node.right, currentSum, k, prefixSumCount);
-        
-        // Backtrack to remove the current path sum count
-        prefixSumCount.put(currentSum, prefixSumCount.get(currentSum) - 1);
-        
+
         return count;
     }
 }
