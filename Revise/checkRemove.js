@@ -1,16 +1,4 @@
-function removeElement(nums){
-    let x = 0;
-    for(let i=0; i<nums.length; i++){
-        if(nums[i] > nums[x]){
-            x++;
-            nums[x] = nums[i];
-        }
-    }
-    return x+1;
-}
-
-let nums = [0,0,0,1,1,2,2,2];
-console.log(removeElement(nums))<!-- PrismJS for Syntax Highlighting -->
+<!-- Next Greater Element I -->
 <link
     href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css"
     rel="stylesheet"
@@ -133,123 +121,119 @@ console.log(removeElement(nums))<!-- PrismJS for Syntax Highlighting -->
 <div class="wp_blog_explanation">
     <h2>Problem Statement:</h2>
     <p>
-       Implement a last-in-first-out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal stack (<code>push</code>, <code>top</code>, <code>pop</code>, and <code>empty</code>).
+        You are given an <code>m x n</code> grid where each cell can have one of three values:
     </p>
-
-    <p>Implement the <code>MyStack</code> class:</p>
     <p>
-       <ul>
-        <li><code>void push(int x)</code>Pushes element x to the top of the stack.</li>
-        <li><code>int pop()</code>Removes the element on the top of the stack and returns it..</li>
-        <li><code>int top()</code>Returns the element on the top of the stack.</li>
-        <li><code>boolean empty()</code>Returns true if the stack is empty, <code>false</code> otherwise.</li>
-       </ul>
+        <ul>
+            <li><code>0</code> representing an empty cell,</li>
+            <li><code>1</code> representing a fresh orange, or</li>
+            <li><code>2</code> representing a rotten orange.</li>
+        </ul>
     </p>
 
-    <p><strong>Notes</strong>
-    <ul>
-        <li>You must use only standard operations of a queue, which means that only <code>push to back</code>, <code>peek/pop from front</code>, <code>size</code> and <code>is empty</code> operations are valid.</li>
-        <li>Depending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue) as long as you use only a queue's standard operations.</li>
-    </ul>
-    </p>
-    <h2>Examples</h2>
+    <p>Every minute, any fresh orange that is <strong>4-directionally adjacent</strong> to a rotten orange becomes rotten.</p>
+    
+    <p>Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return <code>-1</code>.</p>
+
+
+    <h2>Examples:</h2>
     <p><strong>Example 1:</strong></p>
-    <p><strong>Input:</strong>["MyStack", "push", "push", "top", "pop", "empty"]
-    [[], [1], [2], [], [], []]</p>
-    <p><strong>Output:</strong><code>[null, null, null, 2, 2, false]</code></p>
-    <p><strong>Explanation</strong>
-    MyStack myStack = new MyStack();
-    myStack.push(1);
-    myStack.push(2);
-    myStack.top(); // return 2
-    myStack.pop(); // return 2
-    myStack.empty(); // return False
-    </p>
+    <p><strong>Input:</strong></p>
+        <p>grid = [[2,1,1],[0,1,1],[1,0,1]]</p>
+    <p><strong>Output:</strong><code> -1</code></p>
+    <p><strong>Explanation:</strong> The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.</p>
+
+    <p><strong>Example 2:</strong></p>
+    <p><strong>Input:</strong></p>
+        <p>grid = [[0,2]]</p>
+    <p><strong>Output:</strong><code> 0</code></p>
+    <p><strong>Explanation:</strong> Since there are already no fresh oranges at minute 0, the answer is just 0.</p>
+    
+    <p><strong>For more details, refer to LeetCode problem 994.</strong></p>
+
     <h2>Constraints:</h2>
     <ul>
-        <li>1 <= x <= 9</li>
-        <li>At most <code>100</code> calls will be made to <code>push</code>, <code>pop</code>, <code>top</code>, and <code>empty</code>.</li>
-        <li>All the calls to <code>pop</code> and <code>top</code>are valid.</li>
+        <li><code>m == grid.length</code></li>
+        <li><code>n == grid[i].length</code></li>
+        <li><code>1 <= m, n <= 10</code></li>
+        <li><code>grid[i][j] is 0, 1, or 2.</code></li>
     </ul>
 
-    <p>
-        <strong>Follow-up</strong>:
-        Can you implement the stack using only one queue?
-    </p>
-
-    <h2>Approach: Implement Stack Using One Queue</h2>
+    <h2>Approach:</h2>
     <ul>
-        <li>
-            We simulate LIFO (stack) using only FIFO (queue) operations.
-        </li>
-
-        <li>
-            We maintain a single queue (q).
-        </li>
-
-        <li>
-            Remove the last pushed element (i.e., rear of q1).
+        <li><strong>Identify rotten oranges</strong> (2) and push their positions + time <code>([i, j, 0])</code> into a <strong>queue</strong>.</li>
+        
+        <li><strong>Use BFS</strong> to spread rot in 4 directions (up, down, left, right).
             <ul>
-                <li>Insert it at the back (q.push(x)).</li>
-                <li>Rotate the queue to bring the new element to the front by dequeuing and enqueuing all previous elements.</li>
+                <li>For each direction:
+                    If neighbor is a fresh orange (1), rot it (→ 2) and push it into the queue with time +1.
+                </li>
             </ul>
         </li>
+
+        <li><strong>Track time</strong> with <code>maxMinutes</code>.</li>
+    
+        <li>After BFS, if any fresh orange <code>(1)</code> left, return <code>-1</code>.</li>
+        <li>Else, return <code>maxMinutes</code>.</li>
     </ul>
 
     <h2>Visualisation:</h2>
     <img
-        src="https://namastedev.com/blog/wp-content/uploads/2025/07/Screenshot-2025-07-07-at-9.08.56 PM.png"
+        src="https://namastedev.com/blog/wp-content/uploads/2025/07/Screenshot-2025-07-11-at-3.59.21 PM.png"
         alt="stack"
     />
                 <h2>Time Complexity:</h2>
                 <li>
-                  <p><strong>push → O(n)</strong></p>
-                  <p><strong>pop → O(1)</strong></p>
-                  <p><strong>top → O(1)</strong></p>
-                  <p><strong>empty  → O(1)</strong></p>
-                    </li> 
+                  <p><strong>Time Complexity = O(m x n)</strong> 
+                </li> 
                 <h2>Space Complexity:</h2>
                 <li>
-                  <p><strong>Space Complexity = O(n)</strong>
-                <li>Where n is the total number of elements in the stack.</li>  
+                  <p><strong>Space Complexity = O(m x n)</strong> 
                 </p>
                 </li>
 
-                <h2>Dry Run</h2> <div style="background: #f9f9f9; border-left: 4px solid var(--primary); padding: 1rem; border-radius: var(--tab-radius); margin: 1rem 0;"> <p><strong>Input:</strong></p> <pre style="white-space: pre-wrap; background: #fff5ea; padding: 1rem; border-radius: 8px; overflow-x: auto;"> Operations: push(1) push(2) push(3) top() pop() top() empty() </pre> <p><strong>State Transitions:</strong></p> <pre style="white-space: pre-wrap; background: #fff5ea; padding: 1rem; border-radius: 8px; overflow-x: auto;"> After push(1): q = [1]
-After push(2):
-q = [1, 2]
+<h2>Dry Run</h2> <div style="background: #f9f9f9; border-left: 4px solid var(--primary); padding: 1rem; border-radius: var(--tab-radius); margin: 1rem 0;"> <p><strong>Input:</strong></p> <pre style="white-space: pre-wrap; background: #fff5ea; padding: 1rem; border-radius: 8px; overflow-x: auto;"> grid = [ [2,1,1], [1,1,0], [0,1,1] ] </pre> <p><strong>State Transitions:</strong></p> <pre style="white-space: pre-wrap; background: #fff5ea; padding: 1rem; border-radius: 8px; overflow-x: auto;"> Initialize: m = 3, n = 3 queue = []
+→ Scanning grid:
+Found rotten orange at (0,0) → queue = [[0,0,0]]
 
-After push(3):
-q = [1, 2, 3]
+Start BFS:
+queue = [[0,0,0]]
+maxMinutes = 0
 
-top():
-Loop to rotate first n-1 = 2 elements:
-q.push(q.shift()) → q = [2, 3, 1]
-q.push(q.shift()) → q = [3, 1, 2]
-Peek front = 3
-Push front back → q = [1, 2, 3]
-→ Returns: <strong>3</strong>
+Pop [0,0,0]
+→ (0,1) is fresh → rot it → queue.push([0,1,1])
+→ (1,0) is fresh → rot it → queue.push([1,0,1])
+maxMinutes = max(0, 0) = 0
 
-pop():
-Loop to rotate first n-1 = 2 elements:
-q.push(q.shift()) → q = [2, 3, 1]
-q.push(q.shift()) → q = [3, 1, 2]
-Remove front = 3 → q = [1, 2]
-→ Returns: <strong>3</strong>
+Pop [0,1,1]
+→ (0,2) is fresh → rot it → queue.push([0,2,2])
+→ (1,1) is fresh → rot it → queue.push([1,1,2])
+maxMinutes = max(1, 0) = 1
 
-top():
-Loop to rotate first n-1 = 1 element:
-q.push(q.shift()) → q = [2, 1]
-Peek front = 2
-Push front back → q = [1, 2]
-→ Returns: <strong>2</strong>
+Pop [1,0,1]
+→ (2,0) is 0 (empty) → skip
+maxMinutes = max(1, 1) = 1
 
-empty():
-q = [1, 2] → Not empty
-→ Returns: <strong>false</strong>
-</pre>
+Pop [0,2,2]
+→ (1,2) is 0 → skip
+maxMinutes = max(2, 1) = 2
 
-<p><strong>Final State:</strong> <code>q = [1, 2]</code>, <code>Stack (top to bottom): [2, 1]</code></p> </div>
+Pop [1,1,2]
+→ (2,1) is fresh → rot it → queue.push([2,1,3])
+maxMinutes = max(2, 2) = 2
+
+Pop [2,1,3]
+→ (2,2) is fresh → rot it → queue.push([2,2,4])
+maxMinutes = max(3, 2) = 3
+
+Pop [2,2,4]
+→ all neighbors are either 0 or already rotten
+maxMinutes = max(4, 3) = 4
+
+→ BFS finished, check for any remaining fresh oranges:
+→ All are rotten or empty
+
+</pre> <p><strong>Final Output:</strong> <code>4</code></p> <p><strong>Final State:</strong> <code> grid = [ [2,2,2], [2,2,0], [0,2,2] ]</code> </p> </div>
 
 </div>
 
@@ -267,277 +251,281 @@ q = [1, 2] → Not empty
 
     <div class="wp_blog_code-tab-content active" data-lang="js">
 <pre><code class="language-javascript">
-var MyStack = function() {
-    this.q = []; 
-};
-
-MyStack.prototype.push = function(x) {
-    this.q.push(x);
-};
-
-MyStack.prototype.pop = function() {
-    let n = this.q.length;
-    for (let i = 0; i < n - 1; i++) {
-        this.q.push(this.q.shift());
+var orangesRotting = function(grid) {
+    let m = grid.length;
+    let n = grid[0].length;
+    let queue = [];
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (grid[i][j] === 2) {
+                queue.push([i, j, 0]);
+            }
+        }
     }
-    return this.q.shift();
-};
+    let maxMinutes = 0;
+    while (queue.length) {
+        let [x, y, level] = queue.shift();
 
-MyStack.prototype.top = function() {
-    let n = this.q.length;
-    for (let i = 0; i < n - 1; i++) {
-        this.q.push(this.q.shift());
+        if (x > 0 && grid[x - 1][y] === 1) {
+            grid[x - 1][y] = 2;
+            queue.push([x - 1, y, level + 1]);
+        }
+        if (x < m - 1 && grid[x + 1][y] === 1) {
+            grid[x + 1][y] = 2;
+            queue.push([x + 1, y, level + 1]);
+        }
+        if (y < n - 1 && grid[x][y + 1] === 1) {
+            grid[x][y + 1] = 2;
+            queue.push([x, y + 1, level + 1]);
+        }
+        if (y > 0 && grid[x][y - 1] === 1) {
+            grid[x][y - 1] = 2;
+            queue.push([x, y - 1, level + 1]);
+        }
+        maxMinutes = Math.max(level, maxMinutes);
     }
-    let front = this.q.shift();
-    this.q.push(front);
-    return front;
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (grid[i][j] === 1) {
+                return -1;
+            }
+        }
+    }
+    return maxMinutes;
 };
-
-MyStack.prototype.empty = function() {
-    return this.q.length === 0;
-};
-</code></pre>
-
+</code>
+</pre>
 </div>
 
     <div class="wp_blog_code-tab-content" data-lang="py">
         <pre><code class="language-python">
 from collections import deque
+def orangesRotting(grid):
+    m = len(grid)
+    n = len(grid[0])
+    queue = deque()
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] == 2:
+                queue.append((i, j, 0))
+    maxMinutes = 0
+    while queue:
+        x, y, level = queue.popleft()
 
-class MyStack:
-    def __init__(self):
-        self.q = deque()
-
-    def push(self, x: int) -> None:
-        self.q.append(x)
-
-    def pop(self) -> int:
-        for _ in range(len(self.q) - 1):
-            self.q.append(self.q.popleft())
-        return self.q.popleft()
-
-    def top(self) -> int:
-        for _ in range(len(self.q) - 1):
-            self.q.append(self.q.popleft())
-        front = self.q.popleft()
-        self.q.append(front)
-        return front
-
-    def empty(self) -> bool:
-        return len(self.q) == 0
-
+        if x > 0 and grid[x - 1][y] == 1:
+            grid[x - 1][y] = 2
+            queue.append((x - 1, y, level + 1))
+        if x < m - 1 and grid[x + 1][y] == 1:
+            grid[x + 1][y] = 2
+            queue.append((x + 1, y, level + 1))
+        if y < n - 1 and grid[x][y + 1] == 1:
+            grid[x][y + 1] = 2
+            queue.append((x, y + 1, level + 1))
+        if y > 0 and grid[x][y - 1] == 1:
+            grid[x][y - 1] = 2
+            queue.append((x, y - 1, level + 1))
+        maxMinutes = max(maxMinutes, level)
+    for row in grid:
+        if 1 in row:
+            return -1
+    return maxMinutes
     </code></pre>
     </div>
     <div class="wp_blog_code-tab-content" data-lang="java">
         <pre><code class="language-java">
-import java.util.LinkedList;
-import java.util.Queue;
-
-class MyStack {
-    Queue<Integer> q = new LinkedList<>();
-
-    public void push(int x) {
-        q.offer(x);
-    }
-
-    public int pop() {
-        int n = q.size();
-        for (int i = 0; i < n - 1; i++) {
-            q.offer(q.poll());
+public int orangesRotting(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    Queue<int[]> queue = new LinkedList<>();
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 2) {
+                queue.add(new int[]{i, j, 0});
+            }
         }
-        return q.poll();
     }
+    int maxMinutes = 0;
+    while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        int x = curr[0], y = curr[1], level = curr[2];
 
-    public int top() {
-        int n = q.size();
-        for (int i = 0; i < n - 1; i++) {
-            q.offer(q.poll());
+        if (x > 0 && grid[x - 1][y] == 1) {
+            grid[x - 1][y] = 2;
+            queue.add(new int[]{x - 1, y, level + 1});
         }
-        int front = q.poll();
-        q.offer(front);
-        return front;
+        if (x < m - 1 && grid[x + 1][y] == 1) {
+            grid[x + 1][y] = 2;
+            queue.add(new int[]{x + 1, y, level + 1});
+        }
+        if (y < n - 1 && grid[x][y + 1] == 1) {
+            grid[x][y + 1] = 2;
+            queue.add(new int[]{x, y + 1, level + 1});
+        }
+        if (y > 0 && grid[x][y - 1] == 1) {
+            grid[x][y - 1] = 2;
+            queue.add(new int[]{x, y - 1, level + 1});
+        }
+        maxMinutes = Math.max(level, maxMinutes);
     }
-
-    public boolean empty() {
-        return q.isEmpty();
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1) return -1;
+        }
     }
+    return maxMinutes;
 }
  </code></pre>
     </div>
     <div class="wp_blog_code-tab-content" data-lang="cpp">
         <pre><code class="language-cpp">
-#include &lt;queue&gt;
-class MyStack {
-    std::queue<int> q;
-public:
-    void push(int x) {
-        q.push(x);
-    }
-
-    int pop() {
-        int n = q.size();
-        for (int i = 0; i < n - 1; ++i) {
-            q.push(q.front());
-            q.pop();
+int orangesRotting(vector<vector<int>>& grid) {
+    int m = grid.size();
+    int n = grid[0].size();
+    queue<tuple<int, int, int>> q;
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (grid[i][j] == 2) {
+                q.push({i, j, 0});
+            }
         }
-        int top = q.front();
-        q.pop();
-        return top;
     }
+    int maxMinutes = 0;
+    while (!q.empty()) {
+        auto [x, y, level] = q.front();
+        q.pop();
 
-    int top() {
-        int n = q.size();
-        for (int i = 0; i < n - 1; ++i) {
-            q.push(q.front());
-            q.pop();
+        if (x > 0 && grid[x - 1][y] == 1) {
+            grid[x - 1][y] = 2;
+            q.push({x - 1, y, level + 1});
         }
-        int top = q.front();
-        q.pop();
-        q.push(top);
-        return top;
+        if (x < m - 1 && grid[x + 1][y] == 1) {
+            grid[x + 1][y] = 2;
+            q.push({x + 1, y, level + 1});
+        }
+        if (y < n - 1 && grid[x][y + 1] == 1) {
+            grid[x][y + 1] = 2;
+            q.push({x, y + 1, level + 1});
+        }
+        if (y > 0 && grid[x][y - 1] == 1) {
+            grid[x][y - 1] = 2;
+            q.push({x, y - 1, level + 1});
+        }
+        maxMinutes = max(level, maxMinutes);
     }
-
-    bool empty() {
-        return q.empty();
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (grid[i][j] == 1) return -1;
+        }
     }
-};
-    </code></pre>
+    return maxMinutes;
+}
+</code></pre>
     </div>
 
     <div class="wp_blog_code-tab-content" data-lang="c">
         <pre><code class="language-c">
-#include &lt;stdio.h&gt;
-#include &lt;stdbool.h&gt;
-#include &lt;stdlib.h&gt;
-
-#define MAX 1000
-
-typedef struct {
-    int data[MAX];
-    int front;
-    int rear;
-    int size;
-} Queue;
-
-void initQueue(Queue* q) {
-    q->front = 0;
-    q->rear = 0;
-    q->size = 0;
-}
-
-void enqueue(Queue* q, int val) {
-    if (q->size == MAX) {
-        printf("Queue overflow\n");
-        return;
+int orangesRotting(int** grid, int gridSize, int* gridColSize) {
+    int m = gridSize;
+    int n = gridColSize[0];
+    int queue[m * n][3];
+    int front = 0, rear = 0;
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (grid[i][j] == 2) {
+                queue[rear][0] = i;
+                queue[rear][1] = j;
+                queue[rear][2] = 0;
+                rear++;
+            }
+        }
     }
-    q->data[q->rear] = val;
-    q->rear = (q->rear + 1) % MAX;
-    q->size++;
-}
+    int maxMinutes = 0;
+    while (front < rear) {
+        int x = queue[front][0];
+        int y = queue[front][1];
+        int level = queue[front][2];
+        front++;
 
-int dequeue(Queue* q) {
-    if (q->size == 0) {
-        printf("Queue underflow\n");
-        return -1;
+        if (x > 0 && grid[x - 1][y] == 1) {
+            grid[x - 1][y] = 2;
+            queue[rear][0] = x - 1;
+            queue[rear][1] = y;
+            queue[rear][2] = level + 1;
+            rear++;
+        }
+        if (x < m - 1 && grid[x + 1][y] == 1) {
+            grid[x + 1][y] = 2;
+            queue[rear][0] = x + 1;
+            queue[rear][1] = y;
+            queue[rear][2] = level + 1;
+            rear++;
+        }
+        if (y < n - 1 && grid[x][y + 1] == 1) {
+            grid[x][y + 1] = 2;
+            queue[rear][0] = x;
+            queue[rear][1] = y + 1;
+            queue[rear][2] = level + 1;
+            rear++;
+        }
+        if (y > 0 && grid[x][y - 1] == 1) {
+            grid[x][y - 1] = 2;
+            queue[rear][0] = x;
+            queue[rear][1] = y - 1;
+            queue[rear][2] = level + 1;
+            rear++;
+        }
+
+        if (level > maxMinutes) maxMinutes = level;
     }
-    int val = q->data[q->front];
-    q->front = (q->front + 1) % MAX;
-    q->size--;
-    return val;
-}
-
-int queueSize(Queue* q) {
-    return q->size;
-}
-
-bool isQueueEmpty(Queue* q) {
-    return q->size == 0;
-}
-
-// MyStack implementation using one queue
-typedef struct {
-    Queue q;
-} MyStack;
-
-void myStackInit(MyStack* obj) {
-    initQueue(&obj->q);
-}
-
-void myStackPush(MyStack* obj, int x) {
-    enqueue(&obj->q, x);
-}
-
-int myStackPop(MyStack* obj) {
-    int n = queueSize(&obj->q);
-    for (int i = 0; i < n - 1; i++) {
-        enqueue(&obj->q, dequeue(&obj->q));
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (grid[i][j] == 1) return -1;
+        }
     }
-    return dequeue(&obj->q);
+    return maxMinutes;
 }
-
-int myStackTop(MyStack* obj) {
-    int n = queueSize(&obj->q);
-    for (int i = 0; i < n - 1; i++) {
-        enqueue(&obj->q, dequeue(&obj->q));
-    }
-    int top = dequeue(&obj->q);
-    enqueue(&obj->q, top);
-    return top;
-}
-
-bool myStackEmpty(MyStack* obj) {
-    return isQueueEmpty(&obj->q);
-}
-// Example usage
-int main() {
-    MyStack s;
-    myStackInit(&s);
-
-    myStackPush(&s, 10);
-    myStackPush(&s, 20);
-    myStackPush(&s, 30);
-
-    printf("Top: %d\n", myStackTop(&s)); // 30
-    printf("Pop: %d\n", myStackPop(&s)); // 30
-    printf("Top after pop: %d\n", myStackTop(&s)); // 20
-    printf("Is empty? %s\n", myStackEmpty(&s) ? "Yes" : "No"); // No
-
-    return 0;
-}
-    </code></pre>
+</code></pre>
     </div>
     <div class="wp_blog_code-tab-content" data-lang="cs">
         <pre><code class="language-csharp">
-using System.Collections.Generic;
-
-public class MyStack {
-    private Queue<int> q = new Queue<int>();
-
-    public void Push(int x) {
-        q.Enqueue(x);
-    }
-
-    public int Pop() {
-        int n = q.Count;
-        for (int i = 0; i < n - 1; i++) {
-            q.Enqueue(q.Dequeue());
+public int OrangesRotting(int[][] grid) {
+    int m = grid.Length;
+    int n = grid[0].Length;
+    Queue<(int, int, int)> queue = new();
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 2) {
+                queue.Enqueue((i, j, 0));
+            }
         }
-        return q.Dequeue();
     }
-
-    public int Top() {
-        int n = q.Count;
-        for (int i = 0; i < n - 1; i++) {
-            q.Enqueue(q.Dequeue());
+    int maxMinutes = 0;
+    while (queue.Count > 0) {
+        var (x, y, level) = queue.Dequeue();
+        if (x > 0 && grid[x - 1][y] == 1) {
+            grid[x - 1][y] = 2;
+            queue.Enqueue((x - 1, y, level + 1));
         }
-        int front = q.Dequeue();
-        q.Enqueue(front);
-        return front;
+        if (x < m - 1 && grid[x + 1][y] == 1) {
+            grid[x + 1][y] = 2;
+            queue.Enqueue((x + 1, y, level + 1));
+        }
+        if (y < n - 1 && grid[x][y + 1] == 1) {
+            grid[x][y + 1] = 2;
+            queue.Enqueue((x, y + 1, level + 1));
+        }
+        if (y > 0 && grid[x][y - 1] == 1) {
+            grid[x][y - 1] = 2;
+            queue.Enqueue((x, y - 1, level + 1));
+        }
+        maxMinutes = Math.Max(level, maxMinutes);
     }
-
-    public bool Empty() {
-        return q.Count == 0;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1) return -1;
+        }
     }
+    return maxMinutes;
 }
   </code></pre>
     </div>
@@ -562,14 +550,6 @@ public class MyStack {
                     )
                     .classList.add("active");
             });
-        })
-        
-
-        i
-
-
-
-
-        
+        });
     });
-</script>;
+</script>
